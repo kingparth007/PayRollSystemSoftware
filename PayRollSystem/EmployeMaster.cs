@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace PayRollSystem
 {
-    public partial class Form1 : Form
+    public partial class EmployeMaster : Form
     {
-        public Form1()
+        public EmployeMaster()
         {
             InitializeComponent();
+        }
+
+        private void HeaderPnl_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PayRollDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DepartmentTbl">
+          <Key>
+            <PropertyRef Name="DeptId" />
+          </Key>
+          <Property Name="DeptId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptName" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmpClockTbl">
+          <Key>
+            <PropertyRef Name="EmpClkID" />
+          </Key>
+          <Property Name="EmpClkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpId" Type="int" Nullable="false" />
+          <Property Name="EmpWokDate" Type="date" Nullable="false" />
+          <Property Name="EmpWokDay" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmpWorkStartTime" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmpWorkFinishTime" Type="varchar" MaxLength="10" />
+          <Property Name="EmpWorkHours" Type="varchar" MaxLength="10" />
+          <Property Name="EmpClkDescription" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="EmployeeTbl">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmpName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmpSurname" Type="varchar" MaxLength="20" />
+          <Property Name="EmpUsername" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmpPassword" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmpMNumber" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="EmpEmail" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EmpAddress" Type="varchar" MaxLength="100" />
+          <Property Name="EmpIRD" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="EmpGender" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="EmpBankName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmpBankAccountNO" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="EmpPayRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpStatus" Type="varchar" MaxLength="50" />
+          <Property Name="EmpAddDate" Type="date" Nullable="false" />
+          <Property Name="DeptId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmpPayTbl">
+          <Key>
+            <PropertyRef Name="EmpPayID" />
+          </Key>
+          <Property Name="EmpPayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpSalaryDate" Type="date" Nullable="false" />
+          <Property Name="EmpTotalHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpTotalPay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpTaxPay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpCreditPay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_EmpClockTbl_ToTable">
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="1" />
+          <End Role="EmpClockTbl" Type="Self.EmpClockTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTbl">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="EmpClockTbl">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTbl_ToDepartmentTbl">
+          <End Role="DepartmentTbl" Type="Self.DepartmentTbl" Multiplicity="1" />
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepartmentTbl">
+              <PropertyRef Name="DeptId" />
+            </Principal>
+            <Dependent Role="EmployeeTbl">
+              <PropertyRef Name="DeptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmpPayTbl_EmployeeTbl">
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="1" />
+          <End Role="EmpPayTbl" Type="Self.EmpPayTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTbl">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="EmpPayTbl">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PayRollDataModelStoreContainer">
+          <EntitySet Name="DepartmentTbl" EntityType="Self.DepartmentTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmpClockTbl" EntityType="Self.EmpClockTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeTbl" EntityType="Self.EmployeeTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmpPayTbl" EntityType="Self.EmpPayTbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EmpClockTbl_ToTable" Association="Self.FK_EmpClockTbl_ToTable">
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbl" />
+            <End Role="EmpClockTbl" EntitySet="EmpClockTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTbl_ToDepartmentTbl" Association="Self.FK_EmployeeTbl_ToDepartmentTbl">
+            <End Role="DepartmentTbl" EntitySet="DepartmentTbl" />
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmpPayTbl_EmployeeTbl" Association="Self.FK_EmpPayTbl_EmployeeTbl">
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbl" />
+            <End Role="EmpPayTbl" EntitySet="EmpPayTbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PayRollDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DepartmentTbl">
+          <Key>
+            <PropertyRef Name="DeptId" />
+          </Key>
+          <Property Name="DeptId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="EmployeeTbls" Relationship="Self.FK_EmployeeTbl_ToDepartmentTbl" FromRole="DepartmentTbl" ToRole="EmployeeTbl" />
+        </EntityType>
+        <EntityType Name="EmpClockTbl">
+          <Key>
+            <PropertyRef Name="EmpClkID" />
+          </Key>
+          <Property Name="EmpClkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
+          <Property Name="EmpWokDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EmpWokDay" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpWorkStartTime" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpWorkFinishTime" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EmpWorkHours" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EmpClkDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EmployeeTbl" Relationship="Self.FK_EmpClockTbl_ToTable" FromRole="EmpClockTbl" ToRole="EmployeeTbl" />
+        </EntityType>
+        <EntityType Name="EmployeeTbl">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpSurname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EmpUsername" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpPassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpMNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="EmpEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpGender" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpBankName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpBankAccountNO" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="EmpPayRate" Type="Int32" Nullable="false" />
+          <Property Name="EmpAddDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DeptId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DepartmentTbl" Relationship="Self.FK_EmployeeTbl_ToDepartmentTbl" FromRole="EmployeeTbl" ToRole="DepartmentTbl" />
+          <NavigationProperty Name="EmpClockTbls" Relationship="Self.FK_EmpClockTbl_ToTable" FromRole="EmployeeTbl" ToRole="EmpClockTbl" />
+          <NavigationProperty Name="EmpPayTbls" Relationship="Self.FK_EmpPayTbl_EmployeeTbl" FromRole="EmployeeTbl" ToRole="EmpPayTbl" />
+          <Property Name="EmpAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmpIRD" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="EmpStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmpPayTbl">
+          <Key>
+            <PropertyRef Name="EmpPayID" />
+          </Key>
+          <Property Name="EmpPayID" Type="Int32" Nullable="false" />
+          <Property Name="EmpSalaryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EmpTotalHours" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpTotalPay" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpTaxPay" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpCreditPay" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EmployeeTbl" Relationship="Self.FK_EmpPayTbl_EmployeeTbl" FromRole="EmpPayTbl" ToRole="EmployeeTbl" />
+        </EntityType>
+        <Association Name="FK_EmployeeTbl_ToDepartmentTbl">
+          <End Role="DepartmentTbl" Type="Self.DepartmentTbl" Multiplicity="1" />
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepartmentTbl">
+              <PropertyRef Name="DeptId" />
+            </Principal>
+            <Dependent Role="EmployeeTbl">
+              <PropertyRef Name="DeptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmpClockTbl_ToTable">
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="1" />
+          <End Role="EmpClockTbl" Type="Self.EmpClockTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTbl">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="EmpClockTbl">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmpPayTbl_EmployeeTbl">
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="1" />
+          <End Role="EmpPayTbl" Type="Self.EmpPayTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTbl">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="EmpPayTbl">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PayRollDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DepartmentTbls" EntityType="Self.DepartmentTbl" />
+          <EntitySet Name="EmpClockTbls" EntityType="Self.EmpClockTbl" />
+          <EntitySet Name="EmployeeTbls" EntityType="Self.EmployeeTbl" />
+          <EntitySet Name="EmpPayTbls" EntityType="Self.EmpPayTbl" />
+          <AssociationSet Name="FK_EmployeeTbl_ToDepartmentTbl" Association="Self.FK_EmployeeTbl_ToDepartmentTbl">
+            <End Role="DepartmentTbl" EntitySet="DepartmentTbls" />
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmpClockTbl_ToTable" Association="Self.FK_EmpClockTbl_ToTable">
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbls" />
+            <End Role="EmpClockTbl" EntitySet="EmpClockTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmpPayTbl_EmployeeTbl" Association="Self.FK_EmpPayTbl_EmployeeTbl">
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbls" />
+            <End Role="EmpPayTbl" EntitySet="EmpPayTbls" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PayRollDataModelStoreContainer" CdmEntityContainer="PayRollDataEntities">
+          <EntitySetMapping Name="DepartmentTbls">
+            <EntityTypeMapping TypeName="PayRollDataModel.DepartmentTbl">
+              <MappingFragment StoreEntitySet="DepartmentTbl">
+                <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmpClockTbls">
+            <EntityTypeMapping TypeName="PayRollDataModel.EmpClockTbl">
+              <MappingFragment StoreEntitySet="EmpClockTbl">
+                <ScalarProperty Name="EmpClkID" ColumnName="EmpClkID" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="EmpWokDate" ColumnName="EmpWokDate" />
+                <ScalarProperty Name="EmpWokDay" ColumnName="EmpWokDay" />
+                <ScalarProperty Name="EmpWorkStartTime" ColumnName="EmpWorkStartTime" />
+                <ScalarProperty Name="EmpWorkFinishTime" ColumnName="EmpWorkFinishTime" />
+                <ScalarProperty Name="EmpWorkHours" ColumnName="EmpWorkHours" />
+                <ScalarProperty Name="EmpClkDescription" ColumnName="EmpClkDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeTbls">
+            <EntityTypeMapping TypeName="PayRollDataModel.EmployeeTbl">
+              <MappingFragment StoreEntitySet="EmployeeTbl">
+                <ScalarProperty Name="EmpStatus" ColumnName="EmpStatus" />
+                <ScalarProperty Name="EmpIRD" ColumnName="EmpIRD" />
+                <ScalarProperty Name="EmpAddress" ColumnName="EmpAddress" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="EmpType" ColumnName="EmpType" />
+                <ScalarProperty Name="EmpName" ColumnName="EmpName" />
+                <ScalarProperty Name="EmpSurname" ColumnName="EmpSurname" />
+                <ScalarProperty Name="EmpUsername" ColumnName="EmpUsername" />
+                <ScalarProperty Name="EmpPassword" ColumnName="EmpPassword" />
+                <ScalarProperty Name="EmpMNumber" ColumnName="EmpMNumber" />
+                <ScalarProperty Name="EmpEmail" ColumnName="EmpEmail" />
+                <ScalarProperty Name="EmpGender" ColumnName="EmpGender" />
+                <ScalarProperty Name="EmpBankName" ColumnName="EmpBankName" />
+                <ScalarProperty Name="EmpBankAccountNO" ColumnName="EmpBankAccountNO" />
+                <ScalarProperty Name="EmpPayRate" ColumnName="EmpPayRate" />
+                <ScalarProperty Name="EmpAddDate" ColumnName="EmpAddDate" />
+                <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmpPayTbls">
+            <EntityTypeMapping TypeName="PayRollDataModel.EmpPayTbl">
+              <MappingFragment StoreEntitySet="EmpPayTbl">
+                <ScalarProperty Name="EmpPayID" ColumnName="EmpPayID" />
+                <ScalarProperty Name="EmpSalaryDate" ColumnName="EmpSalaryDate" />
+                <ScalarProperty Name="EmpTotalHours" ColumnName="EmpTotalHours" />
+                <ScalarProperty Name="EmpTotalPay" ColumnName="EmpTotalPay" />
+                <ScalarProperty Name="EmpTaxPay" ColumnName="EmpTaxPay" />
+                <ScalarProperty Name="EmpCreditPay" ColumnName="EmpCreditPay" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
